@@ -1,0 +1,217 @@
+{% load aws_utils %}
+{% load cache %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+{% endcomment %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>HPCC Systems&#174; Instant Cloud for AWS</title>
+        {% block head %}{% endblock %}
+        <meta name="author" content="HPCC Systems"/>
+        <link rel="shortcut icon" href="{{ MEDIA_URL }}images/favicon.ico" />
+        <link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}css/template.css"/>
+        <link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}css/custom.css"/>
+        <link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}css/jquery.qtip.css"/>
+        <link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}css/jquery-ui.css"/>
+
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.ui.core.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.ui.tabs.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.validate.js"></script>
+        <script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.qtip.js"></script>
+        {% block custom_scripts %}{% endblock %}
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-16354955-3']);
+            _gaq.push(['_trackPageview']);
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        </script>
+    </head>
+    <body id="ff-affinity" class="f-large style2 iehandle">
+        <div id="cboxOverlay" style="display: none; "></div>
+        <div style="padding-bottom: 40px; padding-right: 40px; display: none; " id="colorbox" class="">
+            <div id="cboxWrapper" style="">
+                <div style="">
+                    <div id="cboxTopLeft" style="float: left; "></div>
+                    <div id="cboxTopCenter" style="float: left; "></div>
+                    <div id="cboxTopRight" style="float: left; "></div>
+                </div>
+                <div style="clear: left; ">
+                    <div id="cboxMiddleLeft" style="float: left; "></div>
+                    <div id="cboxContent" style="float: left; ">
+                        <div id="cboxLoadedContent" style="width: 0px; height: 0px; overflow-x: hidden; overflow-y: hidden; " class=""></div>
+                        <div id="cboxLoadingOverlay" style="" class=""></div>
+                        <div id="cboxLoadingGraphic" style="" class=""></div>
+                        <div id="cboxTitle" style="" class=""></div>
+                        <div id="cboxCurrent" style="" class=""></div>
+                        <div id="cboxNext" style="" class=""></div>
+                        <div id="cboxPrevious" style="" class=""></div>
+                        <div id="cboxSlideshow" style="" class=""></div>
+                        <div id="cboxClose" style="" class=""></div>
+                    </div>
+                    <div id="cboxMiddleRight" style="float: left; "></div>
+                </div>
+                <div style="clear: left; ">
+                    <div id="cboxBottomLeft" style="float: left; "></div>
+                    <div id="cboxBottomCenter" style="float: left; "></div>
+                    <div id="cboxBottomRight" style="float: left; "></div>
+                </div>
+            </div>
+            <div style="position: absolute; width: 9999px; visibility: hidden; display: none; "></div>
+        </div>
+
+        <!--Begin Top Bar-->
+        {% include "top_bar.html" %}
+        <!--End Top Bar-->
+
+        <!--Begin Header-->
+        <div id="header">
+            <div id="header-overlay">
+                <div class="wrapper">
+                    <div>
+                        <a href="http://hpccsystems.com" id="logo" class="png" target="_blank"></a>
+                        <div id="site-title" class="clear">HPCC Systems<sup>&#174;</sup> Instant Cloud for AWS <span style="color: red">Beta</span></div>
+                    </div>
+                    <div id="versions">
+                        HPCC Platform Community Edition: {% version_number hpcc %}<br/>
+                        Front-End Version: {% version_number front %}<br/>
+                        Back-End Version: {% version_number back %}<br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--End Header-->
+        <div id="page-bg"><div id="page-bg2">
+                <div class="wrapper">
+                    <!--Begin Horizontal Menu-->
+                    {% include "header.html" %}
+                    <!--End Horizontal Menu-->
+                    <div id="vertical-sort">
+                        <!-- User 123 -->
+                        <div id="section-row2" class="section-row">
+                            <div id="mainmodules" class="spacer w24">
+                            </div>
+                        </div>
+                        <!-- End User 123 -->
+
+                        <div id="section-row3" class="section-row">
+                            <div id="section-row3-inner">
+                                <div id="main-body-surround" class="spacer">
+                                    <div id="main-body" class="spacing">
+                                        <div class="module-dark">
+                                            <div class="body-surround-top"><div class="body-surround-top2"><div class="body-surround-top3"></div></div></div>
+                                            <div class="body-surround"><div class="body-surround2"><div class="body-surround3">
+                                                        <div id="main-content">
+                                                            <div id="maincol">
+                                                                <div class="maincol-padding">
+                                                                    <!--    Page Content   -->
+                                                                    <div class="bodycontent">
+                                                                        <div class="mainbody-surround">
+                                                                            <div id="maincontent-block">
+                                                                                <div id="node-1282" class="node clear-block">
+                                                                                    <div class="">
+                                                                                        <div id="page">
+                                                                                            <div class="article-rel-wrapper">
+                                                                                                {% block body %}{% endblock %}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="mainbody-tl"></div><div class="mainbody-tr"></div><div class="mainbody-bl"></div><div class="mainbody-br"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <!--    End Page Content  -->
+
+                                                                    <!--    FOOTER LINKS    -->
+                                                                    <div class="bottom-links">
+                                                                    <hr style="color: lightgray"/>
+                                                                        {% include "footer.html" %}
+                                                                    </div>
+                                                                    <!--    END FOOTER LINKS    -->
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="body-surround-bottom"><div class="body-surround-bottom2"><div class="body-surround-bottom3"></div></div></div>
+                                        </div><!-- module-light -->
+                                    </div><!-- main-body -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!--Begin Bottom Section-->
+                <div id="bottom-bg">
+                    <div class="wrapper">
+                    </div>
+                </div>
+                <div id="bottom">
+
+                    <div class="wrapper">
+                        <div class="copyright-block">
+                            <!--    FOOTER  -->
+                            <div id="copyright">
+                                <div class="block">
+                                    <div class="moduletable">
+                                        <div class="module">
+                                            <div style="float:left;width:380px;text-align:left;padding-left:20px;">
+                                                <a href="http://www.lexisnexis.com/risk" title="LexisNexis" target="_blank"><img src="{{ MEDIA_URL }}images/LNRS_RGB_POS_150.png" alt="LexisNexis"/></a>
+                                            </div>
+                                            <div style="float:left;width:125px;text-align:left;padding-left:20px;">
+                                                HPCC Systems<br/>1000 Alderman Dr.<br/>Alpharetta, GA 30005
+                                            </div>
+                                            <div style="float:left;width:150px;text-align:left;padding-left:20px;">
+                                                <a style="color:#007399;" href="mailto:info@hpccsystems.com?subject=Feedback%20from%20hpccsystems.com">info@hpccsystems.com</a><br/>US: 1.877.316.9669<br/>Intl: 1.678.694.2200
+                                            </div>
+                                            <div style="float:left;width:250px;text-align:left;padding-left:20px;">
+                                                &copy; {%now "Y"%} HPCC Systems. All rights reserved.
+                                            </div>
+                                            <div style="float:left;width:250px;text-align:left;padding-left:20px;color: red">
+                                                * By using this service, you agree to the
+                                            </div>
+                                            <div style="float:left;width:250px;text-align:left;padding-left:28px;color: red">
+                                                <a style="color: red" href="{% url aws_terms %}">Terms of Use</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--    FOOTER  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

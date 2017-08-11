@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+{% endcomment %}
+{% block head %}
+{% endblock %}
+{% block body %}
+<h2 class="contentheading">Change Log</h2>
+
+<h4>Front-End Changes</h4>
+<pre>
+Version 0.1.17 
+ - changed link to AWS security credentials page
+</pre>
+<pre>
+Version 0.1.16 
+ - rebranded to HPCC Systems Instant Cloud for AWS
+</pre>
+<pre>
+Version 0.1.15
+ - added option to launch Roxie nodes in a cluster
+ - rebranded to One-Click HPCC rather than One-Click Thor
+</pre>
+<pre>
+Version 0.1.14
+ - added option to attach EBS snapshots to the landing zone on launch
+</pre>
+<pre>
+Version 0.1.13
+ - dynamically scaling the launch log to utilize screen space
+ - added Region option to the Launch Cluster page
+</pre>
+<pre>
+Version 0.1.12
+ - updated zip archives in Code Samples
+ - added helpful mouser-over tooltips to the column headers on View Clusters page
+ - added mouser-over tooltip to esp link on View Clusters page
+ - multiple improvements on Cluster Config page
+ - updated solutions/workarounds on Known Issues page
+</pre>
+<pre>
+Version 0.1.11
+ - made ESP IP address a link to ESP Page
+ - added "this might take as minute note" to launch/termination log page
+ - added "relaunch charge note" to launch log page
+ - not displaying "verbose output" checkbox if cluster is launched/terminated
+ - added "function" column to Cluster IPs page</pre>
+<pre>
+Version 0.1.10
+ - added ability to download cluster log file
+ - improved style of login screen
+</pre>
+<pre>
+Version 0.1.9
+ - added "Verbose Output" check-box to the Log page
+ - added reason for termination of Thor Cluster
+ - added promotion code input to the login
+ - updated description for the beginner samples
+ - added ability to download Thor Cluster log on the Log page
+</pre>
+
+<h4>Back-End Changes</h4>
+<pre>
+Version 0.1.28
+ - Updated ami to platform version 5.2.0-1
+</pre>
+<pre>
+Version 0.1.24
+ - Updated ami to platform version 4.2.2-1
+</pre>
+<pre>
+Version 0.1.23
+ - Updated ami to platform version 4.2.2-rc8
+</pre>
+<pre>
+Version 0.1.22
+ - Updated ami to platform version 4.2.0-4
+</pre>
+<pre>
+Version 0.1.21
+ - Updated ami to platform version 4.0.0-9
+</pre>
+<pre>
+Version 0.1.20
+ - Updated ami to platform version 3.10.8-9
+</pre>
+<pre>
+Version 0.1.19
+ - Updated ami to platform version 3.8.2-2
+</pre>
+<pre>
+Version 0.1.18
+ - Updated ami to platform version 3.6.0-1
+</pre>
+<pre>
+Version 0.1.17
+ - Improved snapshot mounting procedures to enable snapshots with partition tables
+</pre>
+<pre>
+Version 0.1.16
+ - implemented custom AMIs and enabled all regions
+</pre>
+<pre>
+Version 0.1.15
+ - enabled snapshots to be mounted to the landing zone
+</pre>
+<pre>
+Version 0.1.8
+ - fixed issue where AMI and number of nodes are not being reported to the user
+ - improved error handling and reporting
+ - improved support for large log files
+</pre>
+
+<h4>HPCC Systems Community Edition</h4>
+<pre>
+View latest <a target="_blank" href="http://hpccsystems.com/download/free-community-edition-know-limitations">release notes</a> on <a target="_blank" href="http://hpccsystems.com/">HPCC Systems official website</a>.
+</pre>
+
+{% endblock %}

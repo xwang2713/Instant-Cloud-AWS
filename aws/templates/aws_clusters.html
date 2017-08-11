@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+{% endcomment %}
+
+{% block custom_scripts %}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/aws_clusters.js"></script>
+{% endblock %}
+
+{% block body %}
+<h2 class="contentheading">View Clusters</h2>
+<table class="reference" style="width:100%">
+    <thead>
+        <tr>
+            <th id="colLaunchDate">Launch Date</th>
+            <th id="colCluster">Cluster</th>
+            <th id="colNodes">Nodes<br />Requested</th>
+            <th id="colAvailability">Availability<br />Zone</th>
+            <th id="colEspPage">ESP<br />Page</th>
+            <th id="colStatus">Status</th>
+            <th id="colLaunchLog">Launch<br />Log</th>
+            <th id="colConfig">Config</th>
+            <th id="colIpAddresses">IP<br />Addresses</th>
+            <th id="colSshKey">SSH<br />Key</th>
+            <th id="colTerminates">Terminate</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if clusters %}
+            {% for cluster in clusters %}
+            <tr>
+                <td>{{ cluster.date_created }}</td>
+                <td>{{ cluster.cluster_name }}</td>
+                <td>{{ cluster.node_count }}</td>
+                <td>{{ cluster.availability_zone }}</td>
+                <td>{% if cluster.esp %}
+                        <a class="esp-link" href="http://{{ cluster.esp }}:8010" target="_blank">{{ cluster.esp }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ cluster.status }}</td>
+                <td><a href="{% url aws_log cluster.pk %}">Log</a></td>
+                <td>
+                    {% if cluster.configuration %}
+                        <a href="{% url aws_config_file cluster.pk %}">Config</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if cluster.private_ips %}
+                        <a href="{% url aws_ips cluster.pk %}">IPs</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if cluster.ssh_key %}
+                        <a href="{% url aws_ssh_key cluster.pk %}">Key</a>
+                    {% endif %}
+                </td>
+                <td>{% if not cluster.is_terminating and not cluster.is_termated %}
+                            <a href="{% url aws_terminate cluster.pk %}">Terminate</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="11">None found.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

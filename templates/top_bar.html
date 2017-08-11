@@ -1,0 +1,35 @@
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+{% endcomment %}
+
+<div id="top-bar">
+    <div class="wrapper">
+        <div class="top-bar-padding">
+            <div class="topbar-strip">
+                {% admin %}{% format_link 'Admin' aws_admin %}&nbsp;|{% endadmin %}                
+                {% format_link 'Getting Started' aws_getting_started %}&nbsp;|
+                {% format_link 'Comments' aws_comments %}&nbsp;|
+                {% format_link 'FAQs' aws_faqs %}&nbsp;|
+                <a href="http://hpccsystems.com/bb/viewforum.php?f=24&amp;sid=2e951b7905b0f7fa9a6e3eb9567e30b7" target="_blank">HPCC AWS Forum</a>&nbsp;|
+                <a href="https://console.aws.amazon.com/ec2/home?region=us-west-2" target="_blank">AWS Management Console</a>
+            </div>
+        </div>
+    </div>
+</div>

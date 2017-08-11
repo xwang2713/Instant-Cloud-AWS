@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+# Source Code Modifications:
+# 01/20/2012    balyukox@risk   Created
+#---------------------------------------------------------------------------
+{% endcomment %}
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<h2 class="contentheading">Code Samples and Tutorials</h2>
+
+<div id="rightcol">
+     <div class="side-mod">
+        <div class="module-header">
+            <div class="module-header2">
+                <div class="module-header3">
+                    <h3 class="module-title">ECL Resources</h3>
+                </div>
+            </div>
+        </div>
+        <div class="module">
+            <ul class="resources-list">
+                <li><a target="_blank" href="http://hpccsystems.com/community/docs/programmers-guide">ECL Programmers Guide</a></li>
+                <li><a target="_blank" href="http://hpccsystems.com/community/docs/eclide-and-cleinttools">ECL IDE And Client Tools</a></li>
+                <li><a target="_blank" href="http://hpccsystems.com/bb/viewforum.php?f=4&amp;sid=99502b2b7e2f77954c5985ec061e8a5e">ECL Community Forums</a></li>
+                <li><a target="_blank" href="http://hpccsystems.com/community/docs/learning-ecl">Learning ECL</a></li>
+                <li><a target="_blank" href="http://hpccsystems.com/community/docs/tutorials">More Tutorials</a></li>
+                <li><a target="_blank" href="http://hpccsystems.com/community/training-events/training">Training Classes</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="contentcol">   
+    
+    <table border="0" cellpadding="0" cellspacing="0" class="tutorials">
+        <tbody>
+            <tr><td>&nbsp;</td></tr>
+            <tr>
+                <td>
+                    <table width="600" border="0" align="center" bgcolor="#FFFFFF" cellpadding="5" cellspacing="5">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <p>More examples will be added over time.<br/>
+                                        Want to contribute your examples? Visit our <a target="_blank" href="http://hpccsystems.com/community/contributions">Contributions section</a> to share your code and ideas.
+                                    </p>
+                                    <hr />
+                                    <p>Provided below are ECL examples using public data sources that demonstrate how to 
+                                        program ECL. The examples are grouped by the knowledge level of working with ECL. 
+                                        Each example contains helpful information at the top of the file that explains how  
+                                        to download the data and execute the code. Please visit our <a target="_blank" href="http://hpccsystems.com/bb/viewforum.php?f=4&amp;sid=99502b2b7e2f77954c5985ec061e8a5e">forums</a> 
+                                        to find information and additional support from the HPCC Systems community.</p>
+                                </td>
+                            </tr>
+                            <tr> 
+                                <td height="5px" valign="top" bgcolor="#eeeeee"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="download">
+                                        {% with downloadLink=MEDIA_URL|add:"samples/ecl-beginner.zip" downloadTitle="ECL Samples - Beginner"%}
+                                        <div class="package">
+                                            <a href="{{ downloadLink }}" title="Download {{ downloadTitle }}" class="image">
+                                                <img src="{{ MEDIA_URL }}images/zip_icon-96.png" width="96" height="96" alt="Download {{ downloadTitle}}"/>
+                                            </a>
+                                            <br/>
+                                            <a href="{{ downloadLink }}" title="Download {{ downloadTitle }}">
+                                                <span>Download</span>
+                                            </a>
+                                        </div>
+                                        <h2><a href="{{ downloadLink }}">{{ downloadTitle }}</a></h2>
+                                        {% endwith %}
+                                    </div>
+                                    <p>These examples are designed to be an introduction to working with data on HPCC and includes 
+                                        using ECL for parsing a log file, a simple word count, how to spray a data file and apply 
+                                        a simple transformation using sample names and addresses.</p>
+                                </td>
+                            </tr>
+                            <tr> 
+                                <td height="5px" valign="top" bgcolor="#eeeeee"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="download">
+                                        {% with downloadLink=MEDIA_URL|add:"samples/ecl-intermediate.zip" downloadTitle="ECL Samples - Intermediate"%}
+                                        <div class="package">
+                                            <a href="{{ downloadLink }}" title="Download {{ downloadTitle }}" class="image">
+                                                <img src="{{ MEDIA_URL }}images/zip_icon-96.png" width="96" height="96" alt="Download {{ downloadTitle}}"/>
+                                            </a>
+                                            <br/>
+                                            <a href="{{ downloadLink }}" title="Download {{ downloadTitle }}">
+                                                <span>Download</span>
+                                            </a>
+                                        </div>
+                                        <h2><a href="{{ downloadLink }}">{{ downloadTitle }}</a></h2>
+                                        {% endwith %}
+                                    </div>
+                                    <strong>This ZIP package contains the following ECL code examples:</strong>
+                                    <dl>
+                                        <dt>FINCEN Money Services List</dt>
+                                        <dd>- This sample code reads in the Financial Crimes Enforcement Network's list of money services businesses (names, address and services provided) across the US. You can use this list to locate and count how many check cashing businesses are in your area.</dd>
+
+                                        <dt>Gene Data from Pseudomonas</dt>
+                                        <dd>- This sample shows how to ingest data that includes nested child sets of strings and nested child data sets. The data used for the sample is Chromosome data downloaded from Pseudomonas.</dd>
+
+                                        <dt>Heritage Healthcare Prize</dt>
+                                        <dd>- The Heritage Provider Network is sponsoring a contest whose goal is to develop a predictive algorithm that can identify patients who will be admitted to the hospital within the next year using historical claims data. This example shows how to create a simple entry using ECL.</dd>
+
+                                        <dt>National Highway Transportation Safety Administration (NHTSA)</dt>
+                                        <dd>- Database containing complaints reported to the NHTSA by consumers for the last twenty years, consisting of over 850,000 records and includes complaints regarding automobiles and automobile accessories.</dd>
+
+                                        <dt>Zip Code Tabulation Areas (ZCTA)</dt>
+                                        <dd>- Using data from the U.S. Census Bureau, this code allows you to trivially calculate distances between all zip codes.</dd>
+                                    </dl>
+                                </td>
+                            </tr>
+                            <tr> 
+                                <td height="5px" valign="top" bgcolor="#eeeeee"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="download">
+                                        {% with downloadLink=MEDIA_URL|add:"samples/ecl-advanced.zip" downloadTitle="ECL Samples - Advanced"%}
+                                        <div class="package">
+                                            <a href="{{ downloadLink }}" title="Download {{ downloadTitle }}" class="image">
+                                                <img src="{{ MEDIA_URL }}images/zip_icon-96.png" width="96" height="96" alt="Download {{ downloadTitle}}"/>
+                                            </a>
+                                            <br/>
+                                            <a href="{{ downloadLink }}" title="Download {{ downloadTitle }}">
+                                                <span>Download</span>
+                                            </a>
+                                        </div>
+                                        <h2><a href="{{ downloadLink }}">{{ downloadTitle }}</a></h2>
+                                        {% endwith %}
+                                    </div>
+                                    <strong>This ZIP package contains the following ECL code examples:</strong>
+                                    <dl>
+                                        <dt>Ingest Drug Data and Find Drugs Containing Specific Ingredients</dt>
+                                        <dd>- This example uses drug data provided by the FDA. It demonstrates how to ingest this data, which comes as multiple separate files, and how to use that data to locate all drugs that contain a particular ingredient.</dd>
+                                        
+                                        <dt>Surrey Police Spending Analysis</dt>
+                                        <dd>- Using a public data source pertaining to the Surrey Police Department, this example demonstrates using ECL to generate cross-tabulation reports and analyze their spending habits in more detail.</dd>
+
+                                        <dt>WikipediaStats</dt>
+                                        <dd>- This is an initial draft of Wikipedia Descriptors that focus on pages and their links to other Wikipedia Pages, aka &quot;The Wikipedia Graph&quot;.</dd>
+                                    </dl>
+                                </td>
+                            </tr>
+                            <tr> 
+                                <td height="5px" valign="top" bgcolor="#eeeeee"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr><td>&nbsp;</td></tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

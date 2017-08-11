@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+{% endcomment %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+<h2 class="contentheading">Known Issues</h2>
+<p>Below you will find some of the <em>Known Issues</em>. We are working on fixing them...</p>
+
+<p>If you find issues, please report them via the
+    <a target="_blank" href="http://hpccsystems.com/bb/viewforum.php?f=24&amp;sid=2e951b7905b0f7fa9a6e3eb9567e30b7">forums</a> or {% format_link 'comments link' aws_comments %}.</p>
+<hr class="spacer" />
+{% for content in contents %}
+    <h3>{{ content.title|safe }}</h3>
+    <div style="padding-top:0px;padding-bottom:0px;padding-right:0px;padding-left:30px;border:0px solid;">
+        {{ content.text|safe }}
+    </div>
+    {% if not forloop.last %}
+        <hr />
+    {% endif %}
+{% endfor %}
+{% endblock %}

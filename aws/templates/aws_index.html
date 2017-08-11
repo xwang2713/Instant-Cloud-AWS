@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+# Source Code Modifications:
+# 02/03/2012 JJC Initial code created
+#---------------------------------------------------------------------------
+{% endcomment %}
+
+{% block custom_scripts %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/aws_login.js"></script>
+<script type="text/javascript">
+$(function() {
+	$( "#tabs" ).tabs();
+	$( ".tabs-bottom .ui-tabs-nav, .tabs-bottom .ui-tabs-nav > *" )
+	.removeClass( "ui-corner-all ui-corner-top" )
+	.addClass( "ui-corner-bottom" );
+});
+</script>
+{% endblock %}
+
+
+{% block body %}
+
+<table>
+  <tr>
+      <td valign="top" width="600">
+          <div class="demo">
+              <div id="tabs" class="tabs-bottom">
+                  <ul>
+                      <li><a href="#tabs-1">It's easy (with AWS)</a></li>
+                      <li><a href="#tabs-2">Why HPCC Systems?</a></li>
+                      <li><a href="#tabs-3">Who is using it?</a></li>
+                  </ul>
+                      
+                  <div id="tabs-1">
+                      <h2 class="contentheading">HPCC Systems on Amazon Web Services</h2>
+                      <p>With the push of a button, create your own high performance computing cluster (Thor) 
+		         and/or query cluster (Roxie) for data-intensive computing and massively concurrent queries.  
+			 Amazon Web Services account needed.</p>
+                      <ul class="list" style="padding-left: 5px; line-height:25px"> 	      
+                          <li>> Quickly establish AWS security settings.</li>
+                          <li>> Provision and test cluster nodes as EC2 instances.</li>
+                          <li>> Install, test & configure the HPCC software.</li>
+                          <li>> Begin solving your data intensive analysis needs.</li>
+                      </ul>
+                      <p>Login now or request an <a target="_blank" href="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html">AWS account</a>
+                          to reap the benefits of the HPCC platform. Its unique architecture and simple yet powerful data programming
+                          language (ECL) makes it a compelling solution to solve your data intensive computing needs. 
+                          {% format_link 'Getting started' aws_getting_started %} is easy.</p>
+                  </div> 
+                      
+                  <div id="tabs-2">
+                      <img src="{{ MEDIA_URL }}images/img_service.jpg" style="float:right">	    
+                      <h2 class="contentheading">Why choose the HPCC Platform?</h2>
+                      <div style="font-weight: bold;">Enterprise. Open Source. Fast. Scalable. Simple.</div>
+                      <ul class="list" style="padding-left: 5px; line-height:25px">
+                          <li>
+                              > <a target="_blank" href="http://www.hpccsystems.com/Why-HPCC/How-it-works" title="How It Works">How It Works</a>
+                          </li>
+                          <li>
+                              > <a target="_blank" href="http://www.hpccsystems.com/why-HPCC/case-studies" title="Case Studies">Case Studies</a>
+                          </li>
+                          <li>
+                              > <a target="_blank" href="http://www.hpccsystems.com/Why-HPCC/HPCC-vs-Hadoop" title="HPCC vs Hadoop">HPCC vs Hadoop</a>
+                          </li>
+                          <li>
+                              > <a target="_blank" href="http://www.hpccsystems.com/Why-HPCC/features" title="Features">Features</a>
+                          </li>
+                          <li>
+                              > <a target="_blank" href="http://www.hpccsystems.com/why-hpcc/benefits" title="Benefits">Benefits</a>
+                          </li>
+                      </ul>
+                  </div>
+                      
+                  <div id="tabs-3">
+                      <p style="margin: 0; font-weight: bold">
+                         The <a target="_blank" href="http://www.hpccsystems.com/FAQ/what-hpcc" title="High Performance Computing Cluster">HPCC Platform</a> has been around for 
+                         more than a decade, making it the most proven solution of its type in existence. 
+                         Learn how successful organizations are leveraging the HPCC platform to help them solve Big Data problems.
+                      </p>
+                          
+                      <dl style="line-height:20px">
+                          <dt><a target="_blank" href="http://www.hpccsystems.com/Why-HPCC/case-studies/sandia-national-labs">Sandia National Laboratories</a></dt>
+                          [Traditional supercomputing technology] systems are not ideal for the informatics challenge of sorting through petabytes of data to find correlations and generate hypotheses.
+                          See how HPCC Systems helped.
+                          
+                          <dt><a target="_blank" href="http://www.hpccsystems.com/Why-HPCC/case-studies/lexisnexis">LexisNexis</a></dt>
+                          As a leading information provider, LexisNexis&reg; has more than 35 years experience in managing big data.
+                          
+                          <dt><a target="_blank" href="http://www.hpccsystems.com/why-HPCC/case-studies/choicepoint-migration">ChoicePoint Migration</a></dt>
+                          LexisNexis Risk Solutions transitioned ChoicePoint to the High Performance Computing Cluster (HPCC) solution.
+                         
+                          <dt><a target="_blank" href="http://www.hpccsystems.com/Why-HPCC/case-studies/engauge-pinterest">Engauge Pinterest POV</a></dt>
+                          Learn about Pinterest, social media&#039;s newest sweetheart, and the role it can play in companies&#039; marketing program. Engauge created a POV on Pinterest using the HPCC Systems big data platform and machine learning library to analyze the data and usage patterns.
+                      </dl> 
+                  </div>
+              </div>
+          </div>
+    </td>
+    <td valign="top">      
+      <table border="2" bordercolor="#A8C0E1" cellpadding="0" cellspacing="0">	
+	<tr><td bgcolor="#C6DEFF">
+          <form id="login_form" action="" method="post">
+          <fieldset class="vertical">
+	  <b>Sign in with your AWS ID</b>
+                        {% csrf_token %}
+                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                            {{ field.errors }}
+                            {{ field.label_tag }}
+                            {{ field }}
+                            <br />
+                        {% endfor %}
+                        
+                        <div class="fine-warning" style="margin: auto;">* You are solely responsible for all AWS charges.</div>
+                        
+                        <input id="termsOfUse" name="terms_of_use" type="checkbox" />
+                        <label for="termsOfUse">I accept <a target="_blank" href="{% url aws_terms %}">Terms of Use</a> and agree with above</label>
+                        <label for="terms_of_use" class="error hidden">You must agree to Terms of Use!</label>
+                        
+                        <div class="clear"></div>
+                        <input type="submit" value="Login" id="btnLogin" />
+                    </fieldset>
+                </form>    
+      </td></tr>     
+      </table>
+        
+        <div style="height: 5px;"></div>      
+        <table border="2" bordercolor="#A8C0E1" cellpadding="0" cellspacing="0" width="100%" >	
+            <tr>
+                <td bgcolor="#C6DEFF" align="center" style="padding-top: 25px;padding-bottom: 25px;font-weight: bold;">
+                    Can't find your Access Key ID?<br/>
+                    <a target="_blank" href="https://console.aws.amazon.com/iam/home?#security_credential">Click here</a>
+                </td>
+            </tr>	
+        </table>      
+        
+      <div style="height: 5px;"></div>      
+      <table border="2" bordercolor="#A8C0E1" cellpadding="0" cellspacing="0" width="100%">	      
+          <tr>
+              <td bgcolor="#C6DEFF" align="center" style="padding-top: 25px;padding-bottom: 25px;font-weight: bold;">
+                  Don't have an Amazon Web Services Account?<br/>
+                  <a target="_blank" href="https://aws-portal.amazon.com/gp/aws/developer/registration/index.html">Create an account now</a>
+              </td>
+          </tr>
+      </table>      
+    </td>
+  </tr>
+</table>
+<br/>
+<table width="100%" border="2" cellpadding="5" cellspacing="0">
+  <tr><td>
+    <table width="100%"><tr>
+    <td valign="center" width="25%"><b>Learn more about HPCC Systems:</b></td>
+    <td valign="center" width="50%">
+        <a href="http://www.hpccsystems.com/community/training-videos" target="_blank" title="Demo Videos"><img src="{{ MEDIA_URL }}images/video_spotlight.gif"/>&nbsp;Demo Videos</a>&nbsp;&nbsp;
+        <a href="http://www.hpccsystems.com/community/white-papers" target="_blank" title="White Papers"><img src="{{ MEDIA_URL }}images/whitepaper.png"/>&nbsp;White Papers</a>&nbsp;&nbsp
+        <a href="http://www.hpccsystems.com/community/docs" target="_blank" title="Documentation"><img src="{{ MEDIA_URL }}images/whitepaper.png"/>&nbsp;Documentation</a>&nbsp;&nbsp	
+    </td>    
+    <td valign="right" width="25%"><b>Join us on:</b><br/>
+        <div id="social_media" style="width:100%">
+            <p>
+                <a href="https://www.facebook.com/hpccsystems" target="_blank" title="Facebook">
+                    <img src="{{ MEDIA_URL }}images/img_facebook.gif" alt="facebook" width="20" height="20" border="0" />
+                </a>&nbsp;
+                <a href="http://twitter.com/hpccsystems" target="_blank" title="Twitter">
+                    <img src="{{ MEDIA_URL }}images/img_twitter.gif" alt="twitter" border="0" />		    
+                </a>&nbsp;
+		<a href="http://www.linkedin.com/company/hpcc-systems" target="_blank" title="LinkedIn">
+		    <img src="{{ MEDIA_URL }}images/img_linkedin.gif" alt="LinkedIn" border="0" />
+		</a>&nbsp;
+                <a href="https://plus.google.com/u/0/b/101379293249584338988/101379293249584338988/posts" target="_blank" title="Google+">
+                    <img src="{{ MEDIA_URL }}images/googleplus.jpg" alt="Google+" border="0" />
+                </a>&nbsp;
+                <a href="http://www.meetup.com/Big-Data-Processing-and-Analytics-LexisNexis-HPCC-Systems/" title="Meetup" target="_blank">
+                    <img src="{{ MEDIA_URL }}images/meetup.jpg" alt="Meetup" border="0" />
+                </a>&nbsp;
+                <a href="http://www.hpccsystems.com/rss" target="_blank" title="RSS">
+                    <img src="{{ MEDIA_URL }}images/img_rss.gif" alt="rss" border="0" />
+                </a>&nbsp;
+                <a href="http://www.hpccsystems.com/registration-required" target="_blank" title="Mailing Lists">
+                    <img src="{{ MEDIA_URL }}images/mailman.png" alt="Mailing Lists" border="0" />
+                </a>
+            </p>
+        </div>    
+    </td>
+    </tr>
+    </table>
+  </td></tr>
+</table>
+
+{% endblock %}

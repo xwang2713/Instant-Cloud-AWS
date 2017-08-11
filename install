@@ -1,0 +1,166 @@
+#!/bin/bash -e
+
+##
+## Set debugging
+##
+set -ux
+
+
+##
+## Current working directory
+##
+CWD=$(dirname $0)
+
+. ${CHARM_DIR}/hooks/hpcc-common
+
+
+##
+## Detect Linux Distro
+##
+##tlh##uname -a  | grep -q "x86_64" || ( juju-log "Only arch x86_64 is supported."; exit 1)
+
+
+Distributor_ID=$(lsb_release -a | grep  "Distributor ID:" | \
+sed -n "s/.*:[[:space:]]*\(.*\)/\1/p")
+juju-log "Distriobutor_ID: $Distributor_ID"
+
+if [ "$Distributor_ID" == "CentOS" ]
+then
+   os_release=$(lsb_release -a | grep -e "Release:" | \
+   sed -n "s/.*:[[:space:]]*\(.*\)/\1/p")
+   if [ ${os_release:0:1} -eq 6 ]
+   then
+      os_id=el6
+   elif [ ${os_release:0:1} -eq 5 ]
+   then
+      os_id=el5
+   else
+      juju-log "Unsupported CenOS version: ${os_release}."
+      exit 1
+   fi
+
+elif [ "$Distributor_ID" == "Ubuntu" ]
+then
+   code_name=$(lsb_release -a | grep -e "Codename:" | \
+   sed -n "s/.*:[[:space:]]*\(.*\)/\1/p")
+   os_id=$code_name
+else
+   juju-log "Unsupported Linux for Juju/charm HPCC: $Distributor_ID"
+   exit 1
+fi
+juju-log "OS release version:  $os_id"
+
+
+##
+## HPCC prerequisites
+##
+dependencies_dir=${CWD}/../dependencies
+if [ ! -e ${dependencies_dir}/${os_id} ]
+then
+   juju-log "Prequisites for $os_id hasn't been implemented yet."
+   exit 1
+fi
+${dependencies_dir}/${os_id}  || exit 1
+
+
+##
+## Download and install HPCC
+##
+##tlh##download_url=$(config-get download-url)
+download_url=http://cdn.hpccsystems.com/install/ubuntu_12_04_x86_64/5_0_0_rc3_CE/hpcc-systems-community-5.0.0-rc3-ubuntu-12.04-precise-amd64.deb
+##tlh##if [ -z "$download_url" ]
+##tlh##then
+##tlh##  base_url=$(config-get  base-url)
+##tlh##  hpcc_type=$(config-get  hpcc-type)
+##tlh##  hpcc_version=$(config-get  hpcc-version)
+##tlh##  hpcc_version_mmp=$(echo $hpcc_version | cut -d '-' -f1)
+##tlh##  juju-log "hpcc_version_mmp: $hpcc_version_mmp"
+
+##tlh##  declare -A type_detail
+##tlh##  type_detail[CE]=community
+##tlh##  type_detail[EE]=enterprise
+##tlh##  type_detail[LN]=internal
+
+##tlh##  package_name="hpccsystems-platform_${type_detail[$hpcc_type]}-${hpcc_version}"
+##tlh##  download_url="${base_url}/${hpcc_type}-Candidate-${hpcc_version_mmp}"
+##tlh##  download_url="${download_url}/bin/platform/$package_name"
+##tlh##
+##tlh##  if [ "$Distributor_ID" == "CentOS" ]
+##tlh##  then
+##tlh##    download_url="${download_url}.${os_id}_x86_64.rpm"
+##tlh##  else
+##tlh##     download_url="${download_url}${os_id}_amd64.deb"
+##tlh##  fi
+##tlh##fi
+
+juju-log "Download URL: $download_url"
+
+
+curl -s -O $download_url
+hpcc_package=$(basename $download_url)
+
+##tlh##expected_checksum=$(config-get package-checksum)
+##tlh##if [ -n "$expected_checksum" ]
+##tlh##then 
+##tlh##   downloaded_checksum=$(md5sum ${hpcc_package} | cut -d ' ' -f1)
+##tlh##   if [ "$expected_checksum" != "${downloaded_checksum}" ]
+##tlh##   then
+##tlh##      juju-log "Package checksum don't match. Expected ${expected_checksum} but get ${downloaded_checksum}" 
+##tlh##      exit 1
+##tlh##   fi
+##tlh##else
+##tlh##  juju-log "Missing package-checksum in config.yaml. You must validate checksum before installing the HPCC package. The checksum can be retrieved from http://hpccsystems.com/download/free-community-edition/server-platform for HPCC Community Server Platform." 
+##tlh##  exit 1
+   
+##tlh##fi
+
+if [ "$Distributor_ID" == "CentOS" ]
+then
+   rpm -i $hpcc_package || exit 1
+else
+   DEBIAN_FRONTEND=noninteractive dpkg -i $hpcc_package || exit 1
+fi
+
+
+##
+## Set SSH keys
+## Using shipped for now. Will provide script to generate new kyes later
+##
+parse_env_config
+echo $PATH_HOME
+
+if [ ! -d $PATH_HOME/.ssh ]; then
+        mkdir $PATH_HOME/.ssh
+fi
+rm -fr $PATH_HOME/.ssh/*
+
+set +x
+PUB_KEY=$(config-get ssh-key-public)
+PRI_KEY=$(config-get ssh-key-private)
+fix_private_key
+set_ssh_keys
+set -x
+
+##
+## Open the necessory firewall ports
+##
+which open-port  && \
+if [ $? -eq 0 ];then
+   open-port 8010/TCP
+   open-port 8002/TCP
+   open-port 8015/TCP
+   open-port 9876/TCP
+   #open-port 18010/TCP
+   #open-port 18002/TCP
+   #open-port 18008/TCP
+fi
+
+##
+## Create directory for stagging and tempory files
+##
+JUJU_HPCC_DIR=/var/lib/HPCCSystems/charm
+if [ ! -e ${JUJU_HPCC_DIR} ]
+then
+   mkdir -p $JUJU_HPCC_DIR
+   chmod -R 777 $JUJU_HPCC_DIR
+fi

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+# Source Code Modifications:
+# 12/16/2011 CFK Initial code created
+#---------------------------------------------------------------------------
+{% endcomment %}
+{% block head %}
+{% endblock %}
+{% block body %}
+<h2 class="contentheading">A Note About Security</h2>
+<p>
+    Your AWS Access Key ID and AWS Secret Access Key are not stored on this
+    system.  <br />Cookies are cryptographically signed to prevent tampering and are encrypted
+    in flight via HTTPS.
+</p>
+<p>
+We suggest you: <br />
+
+<ul>
+    <li>Create an AWS Access Key specifically for use on this site.</li>
+    <li>Deactivate your AWS Access Key when not in use.</li>
+    <li>Download and delete your cluster's ssh key.</li>
+    <li>Log out of this site when not in use.</li>
+    <li>Clear your cookies when accessing this site from an unsecure computer.</li>
+</ul>
+</p>
+<p>
+    <a target="_blank" href="https://aws-portal.amazon.com/gp/aws/developer/account/index.html?action=access-key">
+    Manage Your AWS Access Keys</a>
+</p>
+{% endblock %}

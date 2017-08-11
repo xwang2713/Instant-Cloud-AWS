@@ -1,0 +1,318 @@
+div.wrapper { margin: 0 auto; width: 979px;padding:0;}
+#leftcol { width:210px;padding:0;float:left;}
+#rightcol { width:235px;padding:0;float: right;}
+#rightcol .module{ padding: 0px 5px 0px 5px}
+#contentcol {width:650px;}
+#main-body { width:959px;padding:0;float:left;}
+.mainbody-surround{padding-top:0;margin-top:0;}
+#maincol { width:100%;padding:0;float:right;}
+#inset-block-left { width:0px;padding:0;}
+#inset-block-right { width:0px;padding:0;}
+#maincontent-block { margin-right:0px;margin-left:0px;}
+#bottom {padding-top: 0px;}
+div#site-title{
+    font-size: 18px;
+    margin-top: -10px;
+    margin-left: 15px;
+    padding-bottom: 10px;
+    float: left;
+}
+div.clear{clear: both}
+div#versions{
+    color: #666;
+    text-align: right;
+    margin-right: 25px;
+    right: 25px;
+    top: 10px;
+}
+ul.errorlist{
+    color: red;
+    font-size: 0.8em;
+    margin: 0px;
+}
+div#top-bar{
+    color: #333;
+    text-align: right;
+    font-size: 0.9em;
+}
+div.top-bar-padding{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.bottom-links, .top-links{
+    text-align: center;
+}
+.bottom-links hr{
+    color: lightgray;
+    padding: 0px;
+    margin: 0px;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 7px;
+}
+
+/**/
+table.reference {
+    background-color:#ffffff;
+    border:1px solid #c3c3c3;
+    border-collapse:collapse;
+}
+table.reference th {
+    background-color:#e5eecc;
+    border:1px solid #c3c3c3;
+    padding:3px;
+    vertical-align:top;
+}
+table.reference td {
+    border:1px solid #c3c3c3;
+    padding:3px;
+    vertical-align:top;
+}
+table.reference tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+
+fieldset.vertical{   }
+fieldset.vertical label{
+    display: block;
+    padding-top: 10px;
+}
+
+/**/
+.fine-warning{
+    font-size: 12px;
+    color: red;
+    font-style: italic;
+    margin-top: -15px;
+    white-space: nowrap; 
+}
+
+div#top-menu{
+    position: absolute;
+    right: 0;
+    margin-right: 25px;
+    font-size: 0.8em;
+}
+
+fieldset.vertical label.error,
+label.error {
+    margin-left: 10px;
+    width: auto;
+    display: inline;
+    color: red;
+    font-style: italic;
+    white-space: nowrap;
+}
+fieldset.vertical label.hidden,
+label.hidden{
+    display: none;
+}
+
+input[type=button], input[type=submit],
+input[type=button]:active, input[type=submit]:active{
+    padding: 5px 20px;
+}
+input[type=button]:hover, input[type=submit]:hover{
+    background-color: #e3e0e0;
+}
+
+input[type=text], input[type=password], select{
+    border: 1px solid #666;
+    padding: 3px;
+}
+input[type=text]:hover, input[type=password]:hover, select:hover,
+input[type=text].error:hover, input[type=password].error:hover, select.error:hover
+{
+    background-color: lightgoldenrodyellow;
+}
+input[readonly]{
+    background-color: #e3e0e0;
+    border: none;
+}
+input[readonly]:hover{
+    background-color: #c3c3c3;
+}
+input[type=text].error, input[type=password].error, select.error {
+    background-color: #feeeee;
+}
+form#login_form input#btnLogin, form#launch_form input#btnLaunch{
+    margin-top: 10px;
+}
+table#tblLaunch{
+    width: 400px;
+}
+
+table#tblLogin{
+    width: 100%;
+}
+table#tblLogin td{
+    vertical-align: top;
+}
+li#lnkLogout{
+    float: right;
+}
+table.tutorials{
+    width: 100%;
+    border:none;
+    border-collapse: collapse;
+}
+table.tutorials td{
+    vertical-align: top;
+}
+table.tutorials > tbody > tr > td{
+    background-color: #CCC;
+}
+ul.resources-list{
+    margin-top:5px;
+}
+ul.resources-list li{
+    list-style: none;
+    margin-left: -20px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px dotted #666;
+}
+ul.resources-list li a{
+    text-decoration: none;
+}
+dl dt{
+    margin-top: 10px;
+}
+dl dd{
+    font-style: italic;
+    color: #666;
+}
+#id_terms_of_use, label[for=id_terms_of_use]{
+    display: none !important;
+}
+label[for=termsOfUse]{
+    display: inline !important;
+    font-size: 12px;
+}
+hr{
+    border: 1px solid #CCC;
+}
+hr.spacer{
+    background-color: #EEE;
+    height: 15px;
+    border: none;
+}
+
+div.download{
+
+}
+div.download h2{
+    margin-top: 0px;
+}
+div.download .package{
+    width: 100px;
+    float: right;
+    text-align: center;
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+div.bodycontent a{
+    text-decoration: underline;
+}
+div.bodycontent a.image,
+a.image{
+    border: 0px;
+    text-decoration: none;
+}
+
+pre{
+    display: block;
+    font-family: monospace;
+    white-space: pre;
+    margin: 1em 0px;
+    padding: 10px;
+    background: #F6F6F6;
+    border-top: 1px solid #E5E5E5;
+    border-right: 1px solid #E5E5E5;
+    border-left: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+}
+h3#clusterStatus{
+    margin: 15px 0 0 0;
+}
+form#logForm p{
+    margin: 0;
+}
+div#saveLogToFile{
+    float: right;
+}
+textarea#configTextArea,
+textarea#logTextArea{
+    width: 100%;
+}
+.stat-terminated{
+    font-weight: bold;
+}
+.stat-failed{
+    color: red;
+    font-weight: bold;
+}
+.stat-ready{
+    color: green;
+    font-weight: bold;
+}
+.stat-configuring{}
+
+div.news-item-spacer{
+    height: 1px;
+    background-color: #666;
+    text-align: center;
+    width: 50%;
+    margin: auto;
+}
+
+#tabs { height: 480px; } 
+.tabs-bottom { position: relative; } 
+.tabs-bottom .ui-tabs-panel {
+    height: 480px; overflow: auto; 
+} 
+.tabs-bottom .ui-tabs-nav { 
+    position: absolute !important; 
+    left: 0; 
+    bottom: 0; 
+    right:0; 
+    padding: 0 0.2em 0.2em 0; 
+} 
+.tabs-bottom .ui-tabs-nav li { 
+    margin-top: -2px !important; 
+    margin-bottom: 1px !important; 
+    border-top: none; 
+    border-bottom-width: 1px; 
+}
+.ui-tabs-selected { 
+    margin-top: -3px !important; 
+}
+
+#tabs {
+	padding: 0px;
+}
+#tabs .ui-tabs-nav {
+	background: transparent;
+	border-width: 1px 0px 0px 0px;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+#tabs .ui-tabs-panel {
+	margin: 0em 0.2em 0.2em 0.2em;
+}
+
+div#social_media a {
+    text-decoration: none;
+}
+
+ul.list li {
+    padding-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    list-style: none;
+    font-weight: bold;
+}

@@ -1,0 +1,102 @@
+#!/bin/bash
+# Sanity Check for system resources / error conditions
+
+# MINIMUM THREHOLDS to indicate error:
+MEM_FREE_MIN=6600000 # kB
+CORE_COUNT_MIN=1
+DISK_FREE_MIN=7024000 # kB
+
+# Script behavior variables
+VERBOSE=${VERBOSE:-0}
+SANITY=0
+
+# Helper functions
+log_err () {
+	echo $@ >&2
+}
+
+log_msg () {
+	[ ${VERBOSE:-0} -eq 1 ] && echo $@
+}
+
+#if [ ${UID:?UID not set} -ne 0 ]; then
+	#echo "Script not running as root - results not guaranteed" >&2
+#fi
+
+##############################################################
+# Start of gathering metrics
+##############################################################
+
+# Free Memory
+MEM_FREE=$(awk '/^MemFree:/ { print $2 }' < /proc/meminfo)
+if [ ${MEM_FREE} -lt ${MEM_FREE_MIN:-2048000} ]; then
+	SANITY=$(($SANITY+1))
+	log_err "Free memory: ${MEM_FREE} kB Less than minimum ${MEM_FREE_MIN:-2048000}"
+else
+	log_msg "Free memory: ${MEM_FREE} kB"
+fi
+
+# CPU Info
+IFS=$'\n'
+declare -a CPU_INFO=( $(awk -F: '/^processor/ { CPU_NUM=$2 } /^model name/ { CPU_NAME=$2 } /^core id/ { print CPU_NUM":"$2 " - " CPU_NAME}' < /proc/cpuinfo) )
+CORE_COUNT=${#CPU_INFO[@]}
+
+if [ ${CORE_COUNT} -lt ${CORE_COUNT_MIN:-4} ]; then
+	SANITY=$(($SANITY+1))
+	log_err "Core count ${CORE_COUNT} Less than minimum ${CORE_COUNT_MIN:-4}"
+else
+	for CPU in ${CPU_INFO[@]} ; do
+		log_msg $CPU
+	done
+fi
+
+
+# Disk space
+declare -a DISK_FREE=( $(df -t ext3 -k | sed -n '2,$p') )
+for MOUNT in ${DISK_FREE[@]} ; do
+	IFS=" " read FS FS_SIZE FS_USED FS_FREE FS_PCT MOUNT_POINT <<< ${MOUNT}
+	if [ ${FS_FREE} -lt ${DISK_FREE_MIN} ]; then
+		SANITY=$(($SANITY+1))
+		log_err "${FS} mounted on ${MOUNT_POINT} has ${FS_FREE} free kB (Minimum ${DISK_FREE_MIN})"
+	else
+		log_msg "${FS} mounted on ${MOUNT_POINT} has ${FS_FREE} free kB"
+	fi
+	if ! sudo touch ${MOUNT_POINT}/test.$$ 2>/dev/null ; then
+		SANITY=$(($SANITY+1))
+		log_err "${FS} mounted on ${MOUNT_POINT} appears to be read-only"
+	else
+		log_msg "${FS} mounted on ${MOUNT_POINT} verified read/write"
+	fi
+	sudo rm -f ${MOUNT_POINT}/test.$$
+
+done
+
+# Network Interface
+# ifconfig gives output like
+#          RX packets:145540 errors:0 dropped:0 overruns:0 frame:0
+#          TX packets:40931 errors:0 dropped:0 overruns:0 carrier:0
+# use tr to change : to space, and awk to print line only if last 4 numerics add to > 0
+
+ETH0_ERRS=$(ifconfig eth0 | tr ':' ' '  | awk '/packets/ {if($5+$7+$9+$11>0) print}')
+if [ "${ETH0_ERRS}" ]; then
+	SANITY=$(($SANITY+1))
+	log_err "Interface eth0 has errors:"
+	log_err "${ETH0_ERRS}"
+fi
+
+# mii-tool seems to not reliably report - need a way to verify link is 100/Full...
+
+# Error message scan in dmesg/log files
+grep -i err /var/log/messages /var/log/syslog /var/log/dmesg | grep -v 'deferred' > /tmp/errs.$$
+if [ -s /tmp/errs.$$ ]; then
+	SANITY=$(($SANITY+1))
+	log_err "Error messages found in system logs:"
+	cat /tmp/errs.$$ >&2
+fi
+rm -f /tmp/errs.$$
+
+# Conclusion
+if [ ${SANITY} -ne 0 ] ; then
+	log_err "Total of ${SANITY} anomalies detected."
+fi
+exit ${SANITY}

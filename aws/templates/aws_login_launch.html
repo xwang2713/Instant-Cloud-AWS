@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+# Source Code Modifications:
+# 11/26/2011 CFK Initial code created
+#---------------------------------------------------------------------------
+{% endcomment %}
+{% block body %}
+<script type="text/javascript">
+    function validateForm(){
+        if ($('#id_node_count').val() > 100){
+            return confirm('Are you sure you want to launch cluster with over 100 nodes?');
+        }
+        return true;
+    }
+</script>
+
+<h2 class="contentheading">Launch A New Thor Cluster</h2>
+<form action="" method="post"  onsubmit="return validateForm();">
+    <fieldset class="vertical">
+        {% double_submit_token %}
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+	{{ form.access_key_id.errors }}
+	{{ form.access_key_id.label_tag }}
+	{{ form.access_key_id }}
+	<br />
+	{{ form.secret_access_key.errors }}
+	{{ form.secret_access_key.label_tag }}
+	{{ form.secret_access_key }}
+	<br />
+	{{ form.node_count.errors }}
+	{{ form.thor_nodes.errors }}
+	{{ form.support_nodes.errors }}
+	<table border="0" style="width:400px;">
+	    <tr>
+		<td>{{ form.node_count.label_tag }}</td>
+		<td>{{ form.thor_nodes.label_tag }}</td>
+		<td>{{ form.support_nodes.label_tag }}</td>
+	    </tr>
+	    <tr>
+		<td>{{ form.node_count }}</td>
+		<td>{{ form.thor_nodes }}</td>
+		<td>{{ form.support_nodes }}</td>
+	    </tr>
+	</table>
+        <p class="fine-warning">*You are solely responsible for all AWS charges.</p>
+        <input type="submit" value="Launch Cluster">
+    </fieldset>
+</form>
+
+<p></p>
+{% comment %}
+<p>
+    <a href="{% url aws_getting_started %}">Getting Started</a>
+    -
+    <a target="_blank" href="https://aws-portal.amazon.com/gp/aws/developer/account/index.html?action=access-key">
+        Manage Your AWS Access Keys</a>
+</p>
+{% endcomment %}
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+
+	function displayNodeInfo(){
+	    clusterSize = parseInt($("#id_node_count").val());
+	    thorNodes = 0;
+	    supportNodes = 0;
+
+	    if (clusterSize > 10000){
+		$("#id_node_count").val(10000);
+		clusterSize = 10000
+		alert("Please contact us at info@hpccsystems.com for requests larger than 10000.")
+	    }
+
+	    if ($("#id_node_count").val() == '' ||
+		                clusterSize == 0 || clusterSize == null){
+		clusterSize = 0
+		supportNodes = 0;
+	    }
+	    else if (clusterSize <= 1){
+		supportNodes = 0;
+	    }
+	    else if (clusterSize <= 10){
+		supportNodes = 1;
+	    }
+	    else if (clusterSize <= 20){
+		supportNodes = 2;
+	    }
+	    else if (clusterSize <= 50){
+		supportNodes = 3;
+	    }
+	    else if (clusterSize <= 100){
+		supportNodes = 4;
+	    }
+	    else if (clusterSize <= 500){
+		supportNodes = 5;
+	    }
+	    else {
+		supportNodes = 7;
+	    }
+
+	    thorNodes = clusterSize - supportNodes;
+
+	    $("#id_thor_nodes").val(thorNodes);
+	    $("#id_support_nodes").val(supportNodes);
+	}
+
+
+	$('#id_node_count').change(function() {
+	    displayNodeInfo();
+	});
+
+	$("#id_node_count").keydown(function(e) {
+	    // http://www.expandinghead.net/keycode.html
+	    if(e.shiftKey==true) return false;
+	    if(e.keyCode==8)  return true;    // backspace
+	    if(e.keyCode==9)  return true;   // enter
+	    if(e.keyCode==13) return true;   // return
+	    if(e.keyCode==27) return true;   // escape
+	    if(e.keyCode>32 && e.keyCode<41) return true; // numbers
+	    if(e.keyCode==45) return true;  // insert
+	    if(e.keyCode==46) return true;  // delete
+	    if(e.keyCode>47 && e.keyCode<58) return true; // numbers-keypad
+	    if(e.keyCode>95 && e.keyCode<106) return true; // numbers-keypad
+
+	    return false;
+	});
+
+	$("#id_node_count").keyup(function(e) {
+
+	    displayNodeInfo();
+	});
+
+	displayNodeInfo();
+  });
+</script>
+
+{% endblock %}

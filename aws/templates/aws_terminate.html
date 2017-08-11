@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+# Source Code Modifications:
+# 12/16/2011 CFK Initial code created
+#---------------------------------------------------------------------------
+{% endcomment %}
+{% block head %}
+<script LANGUAGE="JavaScript">
+<!--
+function confirmSubmit()
+{
+var agree=confirm("Are you sure you want to terminate cluster {{ cluster.cluster_name }}?");
+if (agree)
+	return true ;
+else
+	return false ;
+}
+// -->
+</script>
+{% endblock %}
+{% block body %}
+<h2>Terminate Cluster - {{ cluster.cluster_name }}</h2>
+<p>
+Click below to terminate cluster {{ cluster.cluster_name }}.
+<br /><br />
+<b>Any attached EBS volumes will be deleted.</b>  If you attached any<br />
+EBS volumes to your cluster, we recommend you first snapshot data<br />
+you would like to save via the AWS Management Console.<br /><br />
+After the termination action completes, log into your AWS<br />
+Management Console and refresh your view to confirm your cluster's<br />
+EC2 instances have terminated and any EBS volumes are deleted.<br /><br />
+You are solely responsible for all charges to your AWS account.
+</p>
+<form action="" method="post">
+    {% double_submit_token %}
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="Submit" name="Terminate" value="Terminate Cluster" onClick="return confirmSubmit()">
+</form>
+{% endblock %}

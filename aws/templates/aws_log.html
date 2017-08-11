@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+{% endcomment %}
+
+{% block head %}
+    {% if cluster.reload_page %}
+        <meta http-equiv="refresh" content="15"/>
+    {% endif %}
+{% endblock %}
+
+{% block custom_scripts %}
+<script type="text/javascript">
+    //<![CDATA[
+    $(document).ready(function() {
+        {% if cluster.reload_page %}
+        var sec = 15;
+        setInterval(function(){if (sec >=1){$('#countdown').text(--sec); }}, 1000);
+        {% endif %}
+
+        var position = {my: 'bottom center', at: 'top center'} ;
+        var verboseText = 'Verbose logging is on by default in beta phase';
+        var downloadText = 'Download current {{ cluster.cluster_name }} log <br/>to your local filesystem';
+        //  Add Tooltips
+        $('#id_verbose').qtip({content: verboseText , position: position});
+        $('label[for=id_verbose]').qtip({content: verboseText , position: position});
+        $('#lnkDownloadLog').qtip({content: downloadText, position: position});
+        //  Default to disabled and checked
+        $('#id_verbose').attr('checked', true).attr("disabled", true); //.click(function(){$('#logForm').submit();});
+        
+        //  Scale log size dynamically      
+        var winHeight = $(window).height();
+        var proportion = (winHeight < 600) ? 0.20 : (winHeight < 700) ? 0.40: 0.50;
+        var logHeight = $(window).height() * proportion;
+        $('#logTextArea').css({height:  logHeight + 'px'});
+        //  Scroll to the bottom of the log
+        $('#logTextArea').get(0).scrollTop = $('#logTextArea').get(0).scrollHeight;   
+    });
+    //]]>
+</script>
+{% endblock %}
+
+{% block body %}
+<h2 class="contentheading">HPCC Cluster Launch Log - {{ cluster.cluster_name }}</h2>
+<h3 id="clusterStatus">
+    Status: <span class="stat-{{cluster.status|lower}}">{{cluster.status }}</span>
+    {% if cluster.reload_page %}
+        <img src="{{ MEDIA_URL }}images/ajax-loader.gif" alt="loading..."/>
+    {% endif %}
+</h3>
+{% if cluster.reload_page %}
+<div style="font-size:0.8em;">
+    <span>The page will automatically refresh in </span><span id="countdown">15</span> seconds.
+</div>
+{% endif %}
+
+{% if not cluster.is_launched and not cluster.is_terminated %}
+<p style="font-style: italic">
+    This will take a few minutes depending on the cluster size and the actual load on Amazon AWS systems.<br/>
+    {% if cluster.is_launching and not cluster.is_launched %}
+    Note: nodes that fail to configure will be automatically terminated and relaunched by our script and Amazon may charge for the additional time consumed.
+    {% endif %}
+</p>
+
+<form action="" method="post" id="logForm">
+    {% double_submit_token %}
+    {% csrf_token %}
+    {{ form.as_p }}
+</form>
+{% endif %}
+
+<div id="saveLogToFile"><a id="lnkDownloadLog" target="_blank" href="{% url aws_log_file cluster.pk %}">Save log to a file</a></div>
+<textarea id="logTextArea" rows="20" cols="100">{{ log_entries }}</textarea>
+
+<div style="width:640px;padding-left:0px;">
+{% if cluster.is_terminate_failed %}
+    Your cluster failed to terminate.  Check the <a href="http://status.aws.amazon.com/" target="_blank">
+    AWS Health Dashboard</a>
+    and the FAQ's for possible reasons.  You may need to log into AWS
+    directly to terminate any remaining nodes.
+{% elif cluster.is_terminated %}
+    Review your active instances in the <a href="https://console.aws.amazon.com/ec2/" target="_blank">AWS Management Console</a> to verify no orphan instances are still running.
+
+{% elif cluster.is_terminating %}
+
+{% elif cluster.is_launch_failed %}
+    Your cluster failed to launch.  Click on {% format_link 'View Clusters' aws_clusters %} to terminate your cluster.<br /><br />
+
+    There are two common causes -- The most common cause for a launch or configuration failure is that you are new to Amazon Web Services and your account
+    is not yet fully active.  Please try again in an hour.  <br /><br />
+
+    The second most common cause is that you tried to launch a cluster size
+    that would cause you to exceed the default AWS instance limit of 20.  If that
+    is the case, please use the <a href="http://aws.amazon.com/contact-us/ec2-request/" target="_blank">
+    AWS Limit Increase Request</a> link to request a larger limit.<br /><br />
+
+    If neither of these apply to you, please check the <a href="http://status.aws.amazon.com/" target="_blank">AWS Health Dashboard</a>,
+    the {% format_link 'FAQs' aws_faqs %}, and <a href="http://hpccsystems.com/bb/viewforum.php?f=24&sid=2e951b7905b0f7fa9a6e3eb9567e30b7" target="_blank">forum</a> for possible reasons before {% format_link 'reaching out' aws_comments %} directly.<br /><br />
+
+    Click on {% format_link 'View Clusters' aws_clusters %} to terminate your cluster.
+{% elif cluster.is_launched %}
+    Your cluster is ready.  Click on {% format_link 'View Clusters' aws_clusters %} for technical information about your cluster.
+    Visit <a href="http://hpccsystems.com" target="_blank">hpccsystems.com</a> for forums and detailed documentation on using the HPCC Platform.<br /><br />
+
+    {% if cluster.esp %}
+    ESP IP address is <a href="http://{{ cluster.esp }}:8010" target="_blank">{{ cluster.esp }}</a><br /><br />
+    Please copy this IP address and paste it into your ECL-IDE to connect to this cluster.<br />
+    {% endif %}
+
+{% elif cluster.is_launching %}
+
+{% endif %}
+</div>
+{% endblock %}

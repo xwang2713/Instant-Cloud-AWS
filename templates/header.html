@@ -1,0 +1,95 @@
+{% load aws_utils %}
+{% comment %}
+#---------------------------------------------------------------------------
+# Copyright (C) 2011 HPCC Systems.
+#
+# All rights reserved. This program is free software: you can
+# redistribute it and/or modify it under the terms of the GNU
+# Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------------
+{% endcomment %}
+<div id="horiz-menu" class="moomenu">
+    <div id="horiz-menu2">
+        <div id="horiz-menu3">
+            <ul class="menutop">
+                {% if request.session.owner_id %}
+                    <li class="item10">
+                        <a class="topdaddy link" href="{% url aws_launch %}"><span>Launch Cluster</span></a>
+                    </li>
+                    <li class="item20">
+                        <a class="topdaddy link" href="{% url aws_clusters %}"><span>View Clusters</span></a>
+                    </li>
+                    <li class="item30" id="lnkLogout">
+                        <a class="topdaddy link" href="{% url aws_logout %}"><span>Log Out</span></a>
+                    </li>
+
+                {% else %}
+                    <li class="item50">
+                        <a class="topdaddy link" href="{% url aws_login %}"><span>Login</span></a>
+                    </li>
+                    {% comment %}
+                    <li class="item60">
+                        <a class="topdaddy link" href="{% url aws_login_launch %}"><span>One Step Launch</span></a>
+                    </li>
+                    {% endcomment %}
+                {% endif %}
+                <li id="lnkAwsActivities">
+                    <a class="topdaddy link" href="javascript:void(0)"><span>AWS Activities</span></a>
+                    <div class="drop-wrap columns-1">
+                        <div class="png drop1"><div class="drop2"><div class="drop3"></div></div></div>
+                        <ul class="png columns-1">
+                            <li class="coltop"><a class="link" target="_blank" href="https://console.aws.amazon.com/ec2/home?region=us-west-2"><span>Management Console</span></a></li>
+                            <li class="coltop"><a class="link" target="_blank" href="https://console.aws.amazon.com/iam/home?#security_credential"><span>Access Keys</span></a></li>
+                            <li class="coltop"><a class="link" target="_blank" href="http://status.aws.amazon.com/"><span>Health Dashboard</span></a></li>
+                            <li class="coltop"><a class="link" target="_blank" href="http://aws.amazon.com/contact-us/ec2-request/"><span>Limit Increase Request</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li id="lnkOurResources">
+                    <a class="topdaddy link" href="javascript:void(0)"><span>Resources</span></a>
+                    <div class="drop-wrap columns-1">
+                        <div class="png drop1"><div class="drop2"><div class="drop3"></div></div></div>
+                        <ul class="png columns-1">
+                            <li class="coltop"><a class="link" href="{% url aws_latest_news %}"><span>Latest News</span></a></li>
+                            <li class="coltop"><a class="link" href="{% url aws_getting_started %}"><span>Getting Started</span></a></li>
+                            <li class="coltop"><a class="link" href="{% url aws_known_issues %}"><span>Known Issues</span></a></li>
+                            <li class="coltop"><a class="link" href="{% url aws_change_log %}"><span>Change Log</span></a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li id="lnkTutorials">
+                    <a class="topdaddy link" href="{% url aws_code_samples%}"><span>Code Samples</span></a>
+                </li>
+            </ul>
+            <div class="clr"></div>
+        </div>
+    </div>
+</div>
+{% comment %}
+<div style="text-indent: -25px;">
+    <p>
+        {% if request.session.owner_id %}
+            {% format_link 'View Clusters' aws_clusters %}
+            -
+            {% format_link 'Launch Cluster' aws_launch %}
+            -
+            {% format_link 'Logout' aws_logout %}
+        {% else %}
+            {% format_link 'Log In' aws_login %}
+            -
+            {% format_link 'One Step Launch' aws_login_launch %}
+        {% endif %}
+    </p>
+</div>
+<hr/>
+{% endcomment %}
