@@ -529,11 +529,11 @@ def parse_landing_zone(ips_dict, cluster_config, logger):
     # attributes - build, buildSet, computer, description, directory, name
     instances = Software.DropZone
     if hasattr(instances[0], 'computer'): 
-        //logger("DropZone has computer attribute")
+        #logger("DropZone has computer attribute")
         [nodes[instance.computer].append('Drop Zone') for instance in instances]
         computer = instances[0].computer
     else:
-        //logger("DropZone should have ServerList element")
+        #logger("DropZone should have ServerList element")
         [nodes[ip2name_map[instance.ServerList[0].server]].append('Drop Zone') for instance in instances]
         computer = ip2name_map[instances[0].ServerList[0].server]
 
