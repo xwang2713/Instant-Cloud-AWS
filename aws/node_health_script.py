@@ -117,7 +117,9 @@ fi
 # mii-tool seems to not reliably report - need a way to verify link is 100/Full...
 
 # Error message scan in dmesg/log files
-grep -i err /var/log/messages /var/log/syslog /var/log/dmesg | grep -v 'deferred' | egrep -v 'rtc_cmos|register_vcpu_info' > /tmp/errs.$$
+# /var/log/messages is no more available. Also "err" can be "override" etc. This need to be re-considered.
+#grep -i err /var/log/messages /var/log/syslog /var/log/dmesg | grep -v 'deferred' | egrep -v 'rtc_cmos|register_vcpu_info' > /tmp/errs.$$
+grep -i error  /var/log/syslog /var/log/dmesg | grep -v 'deferred' | egrep -v 'rtc_cmos|register_vcpu_info' > /tmp/errs.$$
 if [ -s /tmp/errs.$$ ]; then
 	ERRORS=$(($ERRORS+1))
 	log_err "Error messages found in system logs:"
